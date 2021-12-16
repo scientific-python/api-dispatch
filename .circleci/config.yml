@@ -20,7 +20,9 @@ jobs:
 
       - run:
           name: Build docs
-          command: make html
+          command: |
+            source venv/bin/activate
+            make html
 
       - store_artifacts:
           path: build/html
