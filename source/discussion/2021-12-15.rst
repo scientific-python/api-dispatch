@@ -1,0 +1,268 @@
+Dispatching discussion - 12/15/21
+=================================
+
+-  Stefan (UC Berkeley)
+-  Ralf Gommers (Quansight)
+-  Sebastian Berg (UC Berkeley)
+-  Jarrod Millman (UC Berkeley)
+-  Ross Barnowski (UC Berkeley)
+-  Ivan Yashchuk (PyTorch, Quansight)
+-  John Kirkham (Dask, NVIDIA)
+-  Leo Fang (CuPy, NVIDA)
+-  Kenichi Maehashi (CuPy, Preferred Networks)
+-  Stanley Seibert (Numba, Anaconda)
+-  Greg Lee (scikit-image)
+-  Mike McCarty (NVIDIA)
+
+A video of this discussion is available `here <TODO>`_.
+
+Intros - Ralf
+-------------
+
+-  Background: discussion here:
+
+   -  https://labs.quansight.org/blog/2021/11/pydata-extensibility-vision
+   -  https://discuss.scientific-python.org/t/a-proposed-design-for-supporting-multiple-array-types-across-scipy-scikit-learn-scikit-image-and-beyond/131
+
+-  Coordinated approach, break from the new-package-per-hardware
+   paradigm
+
+   -  Decision-making, timeframes - coordinated across projects
+
+Intros - Stefan
+---------------
+
+-  Focus the discussion: support for other array objects vs. selective
+   dispatching
+
+Discussion
+----------
+
+-  Error conversion between hardware devices? What if there’s a CPU step
+   in the middle of a GPU processing chain?
+
+   -  Ralf: this should error: no automagic conversion between array
+      types
+   -  Strictly-typed dispatch, no implicit conversions
+   -  Implicit conversions are difficult, both for users and developers
+
+-  Can’t pass arbitrary array objects into a foreign array library
+
+   -  How does this work with NEP18/NEP35 & type-based dispatching
+
+      -  The ``__array_function__`` and other array protocols are
+         numpy-specific for the purposes of this discussion; not part of
+         the array API standard
+      -  Sebastian: could have a duck-array fallback for this
+
+-  High-level question: do we want to do this? Is this useful?
+
+   -  Having talked to HW-folks, e.g. AMD,
+
+   -  What are the options when there is a more performant algorithm
+      that relies on new hardware. Where do they plug in?:
+
+      -  Copy API and have a new library
+      -  Monkeypatch functionality in existing library
+
+   -  These options are not particularly robust
+
+   -  Monkeypatching makes the system opaque - if you get strange
+      results, it’s difficult to get the failures back to the users.
+
+   -  Explicit import switching: difficult to support in packages that
+      are built e.g. on top of scipy
+
+-  What’s the scope for this proposal? Multi-GPU libraries?
+
+   -  The assumptions change (?) when working with clusters, colocated
+      devices
+   -  A: It seems like this should be okay as long as the distributed
+      nature is entirely encapsulated in the backend
+   -  Take dask as an example - currently adheres closely to numpy API,
+      but when you start really using distributed-specific features
+      (e.g. blocksize) then things may not be as performant/have new
+      challenges
+   -  What about lazy systems?
+
+      -  Can subset features that don’t work in a lazy-implementation
+         e.g. and mark them as such
+
+-  Is there any CI/CD infrastructure in place for testing on specialized
+   hardware
+
+   -  Public CI systems for HW is (should be?) a requirement
+   -  This is a bigger problem than just this project (see apple M1)
+   -  Every feature should be tested somewhere, but who’s responsible?
+      Hardware-specific code will not live in the consumer libraries
+      (e.g. scikits)
+
+      -  Functions, including dispatch, should be tested by the backend
+         implementer
+
+         -  Dask is kind of a special case, more of a meta-array than a
+            backend implementer.
+
+      -  What about ``uarray``?
+
+         -  in scipy.fft, cupy has the test for dispatching on their end
+
+   -  It’d be nice if backend implementers could find a way to make a
+      consumer library’s test suite runnable w/ their backend
+
+-  Is there a way of defining the interface/design patterns to look at
+   the design in a more abstract way
+
+   -  Maybe abstract design principles should be better-documented
+
+-  Numerical precision questions in testing: should be a mechanism for
+   users to specify what precision they need from backends for testing
+
+   -  One opinion: this should be up to the backend. Backend implementer
+      documents what their precision is, upstream authors need to be
+      aware
+
+      -  Gets more tricky when you run the original test suite on a new
+         backend
+
+-  Clarifying the distinction between what’s been done in NumPy
+   (e.g. NEPS) and what’s being proposed for scipy
+
+   -  A SPEC (NEP-like document, cross-project) for
+      documenting/decision-making
+   -  Re: numpy vs. scipy. The dispatching machinery in NumPy was not
+      made public and wasn’t designed to handle backend dispatching
+   -  NumPy dispatching only does type-dispatching, not
+      backend-selection dispatching
+
+      -  ``__array_function__`` and ``__array_ufunc__`` seem to work
+         well in RAPIDS ecosystem, can wait-and-see about adoptying any
+         new dispatching mechanism in numpy
+
+-  Backend registration, discovery, versioning etc. How will this work?
+
+   -  Register on import?
+   -  plugin-style where consumer looks for backends
+   -  Backend versioning?
+
+      -  Keeping backends and interfaces in sync
+
+   -  Re: compatibility - have the library dictate to backend
+      implementers that they should follow the libraries interface?
+      Backends accept any signature and only use what it understands,
+      ignoring the rest?
+   -  Related problem: rollout. Not everyone is publishing their
+      libraries (or backends) sychronously.
+
+      -  +1, having an abstract API might help because the API can be
+         versioned
+
+   -  Re: chaning APIs
+
+      -  the majority of current API changes are adding new kwargs, not
+         backward incompatible. This is handleable
+
+   -  Extremely important - needs to be layed out more concretely
+
+-  Have some way for backend-implementers to indicate back to users how
+   much of a given API they support. This usually isn’t immediately
+   obvious to users. Whose job is it to inform users how much of any
+   given API is supported by a backend. Can be addressed via tooling
+
+   -  ``numba`` has a similar problem (currently manually updated), but
+      some tooling for this
+   -  Similar problem in ``dask`` via ``__array_function__``
+   -  Libraries may be able to reject backend registration if it’s known
+      to be uncompatible - depends on how much information libraries
+      have about what backends support
+   -  Nuances in compatibility tables: e.g. in ``cupy``, there may be
+      instances where the signature looks the same as ``numpy``, but
+      only a subset of options for a particular kwarg are supported.
+
+-  Is it possible for library/API authors to make their tests
+   importable/usable by backends?
+
+   -  Important for the previous point: how do implementers/libraries
+      stay in sync
+
+-  Who are the arbiters for deciding what’s supported?
+
+   -  No arbiters - hope that people are honest/correct about it, but no
+      formal role/procedure for verifying support
+   -  Library authors can’t reasonably put requirements on backend
+      implementers in terms of what fraction of the API *must* be
+      supported
+   -  Opinion: it’s best for backend implementers to have freedom to
+      decide what they provide or not
+
+-  In the future, libraries may be written where the user interfaces and
+   backend interfaces are decoupled from the start by design
+
+-  Dispatching between libraries, e.g. ``scipy.ndimage`` and
+   ``scikit-image``
+
+   -  Another example: ``scipy.optimize.minimize`` w/in ``scikit-learn``
+
+-  Two distinct concerns: duck-typing vs. type-based dispatching and
+   backend selection
+
+   -  Supporting various array types would be more work for library
+      maintainers
+   -  Minimize duplication of pure-Python code by backend implementers
+   -  Combine ``array_api`` with a function-level dispatcher to support
+      most use-cases
+
+-  Having ``scikit-learn`` be the API is viewed as a positive, +1 for
+   dispatching
+
+-  
+
+-  What about a backend system for computational kernels shared by
+   multiple GPU libs? (E.g. CUDA solvers)
+
+   -  Seems not high priority right now.
+   -  There could be a “glue” layer for this internally
+
+Next steps
+----------
+
+-  Good ideas from the discussion above:
+
+   -  Sphinx(?) tooling for support tables
+   -  Making test suites reusable
+
+-  Things to document/describe better
+
+-  Collaborative long-term plans between libraries and potential
+   backend-implementers
+
+-  Get a SPEC started from a distillation of the discussion on
+   discuss.scientific-python.org
+
+-  Come up with a minimal set of principles that will guide the effort
+
+   -  a, b, c need to be implemented before approaching technology
+      decisions
+
+      -  Docs w/ tables
+      -  Allow function overrides, etc.
+
+   -  Should have this in place before discussion about specific
+      technological approachs (e.g. ``uarray``)
+
+-  A single SPEC has a lot less info than the blog posts + discussion +
+   this meeting
+
+   -  Dynamic summarization of ongoing discussions would be useful
+
+-  Where to start with the concrete implementation? A formal SPEC
+
+-  Explicitly layout the target audience, potential (hoped-for?) impact?
+
+-  Organize another call - open to the public
+
+Afternotes
+----------
+
+-  single-dispatch (stlib) vs multi-dispatch
+-  

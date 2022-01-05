@@ -23,3 +23,4 @@ https://labs.quansight.org/blog/2021/11/pydata-extensibility-vision/
    :hidden:
 
    faq
+   discussion/index
