@@ -6,6 +6,5 @@ See the
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
 
    2021-12-15
