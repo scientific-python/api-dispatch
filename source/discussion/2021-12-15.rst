@@ -1,20 +1,23 @@
-Dispatching discussion - 12/15/21
-=================================
+API Dispatching discussion - 12/15/21
+=====================================
 
--  Stefan van der Walt (UC Berkeley)
--  Ralf Gommers (Quansight)
--  Sebastian Berg (UC Berkeley)
--  Jarrod Millman (UC Berkeley)
--  Ross Barnowski (UC Berkeley)
--  Ivan Yashchuk (PyTorch, Quansight)
--  John Kirkham (Dask, NVIDIA)
--  Leo Fang (CuPy, NVIDA)
--  Kenichi Maehashi (CuPy, Preferred Networks)
--  Stanley Seibert (Numba, Anaconda)
--  Greg Lee (scikit-image)
--  Mike McCarty (NVIDIA)
+.. warning::
+   This is a draft.
 
-A video of this discussion is available `here <TODO>`_.
+- Stéfan van der Walt (UC Berkeley)
+- Ralf Gommers (Quansight)
+- Sebastian Berg (UC Berkeley)
+- Jarrod Millman (UC Berkeley)
+- Ross Barnowski (UC Berkeley)
+- Ivan Yashchuk (PyTorch, Quansight)
+- John Kirkham (Dask, NVIDIA)
+- Leo Fang (CuPy, NVIDA)
+- Kenichi Maehashi (CuPy, Preferred Networks)
+- Stanley Seibert (Numba, Anaconda)
+- Greg Lee (scikit-image)
+- Mike McCarty (NVIDIA)
+
+A video of this discussion is available `here <https://www.youtube.com/watch?v=iuDp5ba3GTc>`_.
 
 Intros - Ralf
 -------------
