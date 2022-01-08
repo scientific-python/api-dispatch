@@ -1,7 +1,7 @@
 Dispatching discussion - 12/15/21
 =================================
 
--  Stefan (UC Berkeley)
+-  Stefan van der Walt (UC Berkeley)
 -  Ralf Gommers (Quansight)
 -  Sebastian Berg (UC Berkeley)
 -  Jarrod Millman (UC Berkeley)
@@ -172,7 +172,7 @@ Discussion
    -  ``numba`` has a similar problem (currently manually updated), but
       some tooling for this
    -  Similar problem in ``dask`` via ``__array_function__``
-   -  Libraries may be able to reject backend registration if it’s known
+   -  Libraries may want to be able to reject backend registration if it’s known
       to be uncompatible - depends on how much information libraries
       have about what backends support
    -  Nuances in compatibility tables: e.g. in ``cupy``, there may be
@@ -214,8 +214,6 @@ Discussion
 
 -  Having ``scikit-learn`` be the API is viewed as a positive, +1 for
    dispatching
-
--  
 
 -  What about a backend system for computational kernels shared by
    multiple GPU libs? (E.g. CUDA solvers)
@@ -265,4 +263,3 @@ Afternotes
 ----------
 
 -  single-dispatch (stlib) vs multi-dispatch
--  
