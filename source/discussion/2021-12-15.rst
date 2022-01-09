@@ -4,18 +4,20 @@ API Dispatching discussion - 12/15/21
 .. warning::
    This is a draft.
 
-- Stéfan van der Walt (UC Berkeley)
-- Ralf Gommers (Quansight)
-- Sebastian Berg (UC Berkeley)
-- Jarrod Millman (UC Berkeley)
-- Ross Barnowski (UC Berkeley)
+- Stéfan van der Walt (NumPy, scikit-image, UC Berkeley)
+- Ralf Gommers (NumPy, SciPy, Quansight)
+- Sebastian Berg (NumPy, UC Berkeley)
+- Jarrod Millman (NetworkX, UC Berkeley)
+- Ross Barnowski (NumPy, UC Berkeley)
 - Ivan Yashchuk (PyTorch, Quansight)
 - John Kirkham (Dask, NVIDIA)
-- Leo Fang (CuPy, NVIDA)
+- Leo Fang (CuPy, NVIDIA)
 - Kenichi Maehashi (CuPy, Preferred Networks)
 - Stanley Seibert (Numba, Anaconda)
-- Greg Lee (scikit-image)
-- Mike McCarty (NVIDIA)
+- Siu Kwan Lam (Numba, Anaconda)
+- Greg Lee (scikit-image, SciPy, CuPy, Quansight)
+- Mike McCarty (Legate, NVIDIA)
+- Benjamin Zaitlen (RAPIDS, NVIDIA)
 
 A video of this discussion is available `here <https://www.youtube.com/watch?v=iuDp5ba3GTc>`_.
 
