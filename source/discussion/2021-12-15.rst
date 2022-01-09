@@ -53,7 +53,7 @@ Discussion
 
 -  Can’t pass arbitrary array objects into a foreign array library
 
-   -  How does this work with NEP18/NEP35 & type-based dispatching
+   -  How does this work with NEP 18 / NEP 35 & type-based dispatching
 
       -  The ``__array_function__`` and other array protocols are
          numpy-specific for the purposes of this discussion; not part of
@@ -84,7 +84,7 @@ Discussion
       devices
    -  A: It seems like this should be okay as long as the distributed
       nature is entirely encapsulated in the backend
-   -  Take dask as an example - currently adheres closely to numpy API,
+   -  Take Dask as an example - currently adheres closely to the NumPy API,
       but when you start really using distributed-specific features
       (e.g. blocksize) then things may not be as performant/have new
       challenges
@@ -131,18 +131,18 @@ Discussion
          backend
 
 -  Clarifying the distinction between what’s been done in NumPy
-   (e.g. NEPS) and what’s being proposed for scipy
+   (e.g. NEPs) and what’s being proposed for scipy
 
    -  A SPEC (NEP-like document, cross-project) for
       documenting/decision-making
-   -  Re: numpy vs. scipy. The dispatching machinery in NumPy was not
+   -  Re: NumPy vs. SciPy. The dispatching machinery in NumPy was not
       made public and wasn’t designed to handle backend dispatching
    -  NumPy dispatching only does type-dispatching, not
       backend-selection dispatching
 
       -  ``__array_function__`` and ``__array_ufunc__`` seem to work
-         well in RAPIDS ecosystem, can wait-and-see about adoptying any
-         new dispatching mechanism in numpy
+         well in RAPIDS ecosystem, can wait-and-see about adopting any
+         new dispatching mechanism in NumPy
 
 -  Backend registration, discovery, versioning etc. How will this work?
 
@@ -162,10 +162,10 @@ Discussion
       -  +1, having an abstract API might help because the API can be
          versioned
 
-   -  Re: chaning APIs
+   -  Re: chaining APIs
 
       -  the majority of current API changes are adding new kwargs, not
-         backward incompatible. This is handleable
+         backward incompatible. This can be handled.
 
    -  Extremely important - needs to be layed out more concretely
 
