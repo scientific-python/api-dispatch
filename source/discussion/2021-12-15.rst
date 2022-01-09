@@ -19,7 +19,7 @@ API Dispatching discussion - 12/15/21
 - Mike McCarty (Legate, NVIDIA)
 - Benjamin Zaitlen (RAPIDS, NVIDIA)
 
-A video of this discussion is available `here <https://www.youtube.com/watch?v=iuDp5ba3GTc>`_.
+A video of this discussion is available `here <https://www.youtube.com/watch?v=5fDzalQkqeI>`_.
 
 Intros - Ralf
 -------------
