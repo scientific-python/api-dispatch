@@ -12,7 +12,6 @@ API Dispatching discussion - 12/15/21
 - Ivan Yashchuk (PyTorch, Quansight)
 - John Kirkham (Dask, NVIDIA)
 - Leo Fang (CuPy, NVIDIA)
-- Kenichi Maehashi (CuPy, Preferred Networks)
 - Stanley Seibert (Numba, Anaconda)
 - Siu Kwan Lam (Numba, Anaconda)
 - Greg Lee (scikit-image, SciPy, CuPy, Quansight)
