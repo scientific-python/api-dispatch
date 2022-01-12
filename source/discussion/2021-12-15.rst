@@ -1,9 +1,6 @@
 API Dispatching discussion - 12/15/21
 =====================================
 
-.. warning::
-   This is a draft.
-
 - Stéfan van der Walt (NumPy, scikit-image, UC Berkeley)
 - Ralf Gommers (NumPy, SciPy, Quansight)
 - Sebastian Berg (NumPy, UC Berkeley)
