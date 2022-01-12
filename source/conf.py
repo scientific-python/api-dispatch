@@ -60,7 +60,7 @@ html_theme_options = {
             "icon": "fab fa-github-square",
         },
     ],
-    "external_links": [{"name": "Discussion", "url": "https://discuss.scientific-python.org/t/spec-2-api-dispatch/173"}],
+#    "external_links": [{"name": "Discussion", "url": "https://discuss.scientific-python.org/t/spec-2-api-dispatch/173"}],
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
